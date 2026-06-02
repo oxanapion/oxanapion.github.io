@@ -1,0 +1,589 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZT Trader — прототип главной</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0c10;
+    --bg-2:#11151c;
+    --panel:#151a22;
+    --panel-2:#1a212b;
+    --line:#262e3a;
+    --ink:#eef2f7;
+    --ink-dim:#9aa6b4;
+    --ink-faint:#5c6878;
+    --gold:#e8b339;
+    --gold-dim:#a9842b;
+    --green:#3fd07f;
+    --red:#e2554d;
+    --blue:#5aa9f0;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(900px 500px at 80% -5%, rgba(232,179,57,.08), transparent 60%),
+      radial-gradient(700px 500px at 0% 10%, rgba(90,169,240,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Manrope',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  a{color:inherit;text-decoration:none}
+
+  /* placeholder marker */
+  .ph{
+    border-bottom:1px dashed var(--gold);
+    position:relative;
+    cursor:help;
+  }
+  .ph::after{
+    content:"уточнить";
+    font-family:'Manrope';
+    font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bg);background:var(--gold);
+    padding:1px 5px;border-radius:4px;
+    margin-left:6px;vertical-align:middle;font-weight:700;
+  }
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(12px);
+    background:rgba(10,12,16,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Unbounded';font-weight:800;letter-spacing:.04em}
+  .logo .mark{
+    width:34px;height:34px;border-radius:9px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+    display:grid;place-items:center;color:#0a0c10;font-size:13px;font-weight:800;
+  }
+  .logo small{display:block;font-family:'Manrope';font-weight:500;font-size:10px;letter-spacing:.18em;color:var(--ink-faint);text-transform:uppercase;margin-top:1px}
+  .nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--ink-dim);font-weight:500}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{
+    border:1px solid var(--gold);color:var(--gold);
+    padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;
+    transition:.2s;
+  }
+  .nav-cta:hover{background:var(--gold);color:#0a0c10}
+  @media(max-width:880px){.nav-links{display:none}}
+
+  /* hero */
+  .hero{position:relative;padding:72px 0 56px;overflow:hidden}
+  .hero-grid-bg{
+    position:absolute;inset:0;z-index:0;opacity:.5;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(800px 400px at 70% 30%,#000,transparent 75%);
+  }
+  .hero-in{position:relative;z-index:1;max-width:820px}
+  .cert-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;
+    border:1px solid var(--line);background:var(--panel);
+    padding:7px 13px;border-radius:100px;font-size:12px;color:var(--ink-dim);font-weight:500;
+  }
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .pill.green .dot{background:var(--green)}
+  h1{
+    font-family:'Unbounded';font-weight:800;
+    font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.01em;
+    margin-bottom:22px;
+  }
+  h1 .accent{
+    background:linear-gradient(120deg,var(--gold),#f4d27a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{font-size:clamp(15px,2vw,18px);color:var(--ink-dim);max-width:620px;font-weight:400}
+  .lede b{color:var(--ink);font-weight:600}
+  .hero-stats{display:flex;gap:38px;margin:34px 0 32px;flex-wrap:wrap}
+  .stat .num{font-family:'Unbounded';font-weight:600;font-size:30px;color:var(--ink)}
+  .stat .num.gold{color:var(--gold)}
+  .stat .lab{font-size:12.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+  .btn-row{display:flex;gap:13px;flex-wrap:wrap}
+  .btn{
+    padding:14px 24px;border-radius:12px;font-weight:600;font-size:14.5px;
+    transition:.2s;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#0a0c10}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(232,179,57,.25)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:var(--panel)}
+  .btn-ghost:hover{border-color:var(--ink-faint)}
+
+  /* section heading */
+  .sec{padding:54px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:28px}
+  .sec-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .sec-head h2{font-family:'Unbounded';font-weight:600;font-size:clamp(24px,3.5vw,34px)}
+  .sec-sub{color:var(--ink-dim);font-size:14.5px;margin:-16px 0 28px;max-width:640px}
+
+  /* university programs grid */
+  .prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:860px){.prog-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.prog-grid{grid-template-columns:1fr}}
+  .prog{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px;
+    transition:.22s;position:relative;overflow:hidden;
+  }
+  .prog::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--line)}
+  .prog:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
+  .prog.open::before{background:var(--green)}
+  .prog.soon::before{background:var(--gold)}
+  .prog.closed::before{background:var(--red);opacity:.6}
+  .badge{
+    align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.04em;
+    padding:5px 10px;border-radius:7px;
+  }
+  .badge.open{background:rgba(63,208,127,.12);color:var(--green)}
+  .badge.soon{background:rgba(232,179,57,.12);color:var(--gold)}
+  .badge.closed{background:rgba(226,85,77,.12);color:var(--red)}
+  .prog h3{font-family:'Unbounded';font-weight:400;font-size:18px;letter-spacing:-.01em}
+  .prog .desc{font-size:13px;color:var(--ink-dim);flex:1}
+  .prog .price{font-family:'Unbounded';font-weight:600;font-size:22px;color:var(--ink)}
+  .prog .price small{font-family:'Manrope';font-size:12px;color:var(--ink-faint);font-weight:500}
+  .prog .pbtn{
+    margin-top:4px;padding:11px;border-radius:10px;text-align:center;
+    font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--panel-2);
+    transition:.2s;
+  }
+  .prog .pbtn:hover{border-color:var(--gold);color:var(--gold)}
+  .prog.closed .pbtn:hover{border-color:var(--ink-faint);color:var(--ink-dim)}
+
+  /* bento services */
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:860px){.bento{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.bento{grid-template-columns:1fr}}
+  .tile{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;transition:.22s;position:relative;overflow:hidden;min-height:180px;
+    display:flex;flex-direction:column;
+  }
+  .tile:hover{transform:translateY(-3px);border-color:var(--ink-faint)}
+  .tile .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:auto}
+  .tile h3{font-family:'Unbounded';font-weight:400;font-size:21px;margin:14px 0 8px}
+  .tile p{font-size:13px;color:var(--ink-dim)}
+  .tile .arrow{margin-top:16px;font-size:13px;font-weight:600;color:var(--gold);display:inline-flex;align-items:center;gap:6px}
+  .tile.span2{grid-column:span 2}
+  @media(max-width:520px){.tile.span2{grid-column:span 1}}
+  .tile.accent{background:linear-gradient(150deg,#1c1710,var(--panel));border-color:var(--gold-dim)}
+  .tile .buybtn{margin-top:14px;align-self:flex-start;padding:9px 16px;border-radius:9px;background:var(--gold);color:#0a0c10;font-weight:600;font-size:13px}
+
+  /* full-width service bands */
+  .srv-list{display:flex;flex-direction:column;gap:16px}
+  .srv{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 36px;transition:.2s}
+  .srv:hover{border-color:var(--ink-faint)}
+  .srv-main{max-width:720px}
+  .srv .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  .srv h3{font-family:'Unbounded';font-weight:400;font-size:26px;margin:10px 0 10px}
+  .srv p{font-size:14px;color:var(--ink-dim);max-width:680px}
+  .srv-disc{font-size:12px;color:var(--ink-faint);margin-top:12px}
+  .srv-act{align-self:center;white-space:nowrap}
+  .srv-split{display:grid;grid-template-columns:1.1fr 1fr;gap:0;padding:0;overflow:hidden;align-items:stretch}
+  .srv-split.accent{border-color:var(--gold-dim)}
+  .srv-split .srv-body{padding:36px 40px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+  .srv-split .srv-img{min-height:280px;background-size:cover;background-position:center;border-left:1px solid var(--line);background-color:#0d1117}
+  @media(max-width:760px){
+    .srv{flex-direction:column;align-items:flex-start}
+    .srv-act{align-self:stretch;text-align:center}
+    .srv-split{grid-template-columns:1fr}
+    .srv-split .srv-img{min-height:200px;border-left:0;border-top:1px solid var(--line)}
+  }
+
+  /* mentors */
+  .mentors{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:760px){.mentors{grid-template-columns:1fr 1fr}}
+  .mentor{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;transition:.2s}
+  .mentor:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
+  .head{width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:linear-gradient(135deg,var(--panel-2),var(--line));display:grid;place-items:center;font-family:'Unbounded';color:var(--ink-faint);font-size:24px;border:1px solid var(--line)}
+  .mentor h4{font-family:'Unbounded';font-weight:400;font-size:17px}
+  .mentor .role{font-size:12px;color:var(--gold);margin-top:3px}
+  .mentor .exp{font-size:12px;color:var(--ink-faint);margin-top:6px}
+
+  /* social */
+  .social-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+  @media(max-width:760px){.social-grid{grid-template-columns:1fr}}
+  .yt-card,.tg-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column}
+  .yt-frame{aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:14px}
+  .yt-frame iframe{width:100%;height:100%;border:0}
+  .social-head{display:flex;align-items:center;gap:10px}
+  .social-head .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:13px}
+  .ico.yt{background:#ff0033;color:#fff}
+  .ico.tg{background:#2aabee;color:#fff}
+  .social-head h3{font-family:'Unbounded';font-weight:400;font-size:18px}
+  .yt-stats{display:flex;gap:24px;margin-top:14px}
+  .yt-stats .s .n{font-family:'Unbounded';font-size:22px;color:var(--gold)}
+  .yt-stats .s .l{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em}
+  .tg-mock{margin-top:14px;flex:1;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}
+  .tg-mock .meta{font-size:11px;color:var(--ink-faint)}
+  .tg-mock .txt{font-size:13px;color:var(--ink-dim)}
+  .note{font-size:12px;color:var(--ink-faint);margin-top:10px;font-style:italic}
+
+  /* tg post */
+  .tg-post{margin-top:14px;flex:1;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .tg-top{display:flex;align-items:center;gap:10px}
+  .tg-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2aabee,#1c87c4);display:grid;place-items:center;color:#fff;font-family:'Unbounded';font-weight:600;font-size:14px}
+  .tg-ch{font-weight:700;font-size:13.5px;color:var(--ink)}
+  .tg-handle{font-size:11.5px;color:var(--ink-faint)}
+  .tg-text{font-size:13px;color:var(--ink-dim);line-height:1.55}
+  .tg-foot{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-faint);border-top:1px solid var(--line);padding-top:8px}
+
+  /* shorts / reviews */
+  .shorts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:760px){.shorts{grid-template-columns:1fr 1fr}}
+  .short{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;border:1px solid var(--line);cursor:pointer;transition:.22s}
+  .short:hover{transform:translateY(-4px);border-color:var(--gold-dim)}
+  .short:hover .play{transform:translate(-50%,-50%) scale(1.08)}
+  .short .thumb{position:absolute;inset:0;background-size:cover}
+  .short .lines{position:absolute;inset:0;opacity:.5;
+    background-image:linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:22px 22px}
+  .short .badge-s{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-size:9.5px;letter-spacing:.12em;font-weight:700;padding:4px 8px;border-radius:6px}
+  .short .dur{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 7px;border-radius:6px;font-weight:600}
+  .short .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(232,179,57,.94);display:grid;place-items:center;color:#0a0c10;box-shadow:0 8px 28px rgba(0,0,0,.45);transition:.22s}
+  .short .play svg{width:20px;height:20px;margin-left:3px}
+  .short .who{position:absolute;left:0;right:0;bottom:0;padding:18px 14px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+  .short .who .nm{font-family:'Unbounded';font-weight:400;font-size:16px;color:#fff}
+  .short .who .tag2{font-size:11px;color:#c9d2dd;margin-top:2px}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);margin-top:50px;padding:40px 0 60px;background:var(--bg-2)}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
+  footer h5{font-family:'Unbounded';font-weight:400;font-size:14px;margin-bottom:12px}
+  footer p,footer a{font-size:13px;color:var(--ink-dim);display:block;margin-bottom:6px}
+  footer a:hover{color:var(--ink)}
+  .disclaimer{margin-top:30px;padding:18px;background:rgba(226,85,77,.06);border:1px solid rgba(226,85,77,.2);border-radius:12px;font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+  .copy{margin-top:24px;font-size:11.5px;color:var(--ink-faint)}
+
+  /* proto banner */
+  .proto-banner{background:var(--gold);color:#0a0c10;text-align:center;font-size:12.5px;font-weight:600;padding:8px;letter-spacing:.02em}
+
+  /* constructor */
+  .start-sec{padding:20px 0 10px}
+  .start-card{
+    position:relative;overflow:hidden;border-radius:22px;
+    background:linear-gradient(135deg,#1d1808,#13171f 60%);
+    border:1px solid var(--gold-dim);
+    padding:38px 40px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;
+  }
+  .start-card::before{
+    content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(232,179,57,.18),transparent 70%);
+  }
+  .start-l{position:relative;z-index:1;max-width:640px}
+  .start-l .tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .start-l h2{font-family:'Unbounded';font-weight:600;font-size:clamp(24px,3.5vw,34px);margin:10px 0 12px}
+  .start-l p{color:var(--ink-dim);font-size:14.5px;max-width:560px}
+  .start-steps{display:flex;gap:18px;margin-top:18px;flex-wrap:wrap}
+  .start-steps span{font-size:12.5px;color:var(--ink-faint)}
+  .start-steps b{color:var(--ink);font-weight:600}
+  .start-r{position:relative;z-index:1}
+</style>
+</head>
+<body>
+
+<div class="proto-banner">ВИЗУАЛЬНЫЙ ПРОТОТИП ГЛАВНОЙ · не финальная вёрстка Tilda · пунктир = данные на уточнение</div>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="logo"><span class="mark">NZT</span><span>NZT TRADER<small>Независимый трейдер</small></span></a>
+    <div class="nav-links">
+      <a href="#university">Университет</a>
+      <a href="#tools">Сервисы</a>
+      <a href="#mentors">Менторы</a>
+      <a href="#social">Сообщество</a>
+    </div>
+    <a href="#start" class="nav-cta">Построить маршрут</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="wrap hero-in">
+    <div class="cert-row">
+      <span class="pill"><span class="dot"></span>Европейская сертификация HISTES</span>
+      <span class="pill green"><span class="dot"></span>Международное сообщество Price Action трейдеров</span>
+    </div>
+    <h1>Экосистема для <span class="accent">ритейл-<br>и институциональных</span> трейдеров.</h1>
+    <p class="lede">Уникальная методология Price Action, сертифицированный университет и полная инфраструктура — <b>от бесплатного бота до личного наставничества.</b></p>
+    <div class="hero-stats">
+      <div class="stat"><div class="num gold">7+ лет</div><div class="lab">на рынке образования</div></div>
+      <div class="stat"><div class="num gold">1000+</div><div class="lab">выпускников</div></div>
+      <div class="stat"><div class="num">HISTES</div><div class="lab">единственная в СНГ сертификация</div></div>
+      <div class="stat"><div class="num">24/7</div><div class="lab">работа торговых ботов Atlas</div></div>
+    </div>
+    <div class="btn-row">
+      <a href="#start" class="btn btn-primary">Построить свой маршрут в трейдинге →</a>
+    </div>
+  </div>
+</header>
+
+<!-- UNIVERSITY -->
+<section class="sec" id="university">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">01 · Обучение</span>
+      <h2>NZT University</h2>
+    </div>
+    <p class="sec-sub">Сертифицированные программы от новичка до профессионала. Бесплатный старт, групповые потоки и личное наставничество.</p>
+
+    <div class="prog-grid">
+      <div class="prog open">
+        <span class="badge open">● Доступ сразу</span>
+        <h3>Курс «Ноль-Один»</h3>
+        <p class="desc">Базовый курс в записи. Самостоятельное прохождение, без группы. Лучший старт.</p>
+        <div class="price">2 999 ₽ <small>/ 55 $</small></div>
+        <a href="#" class="pbtn">Купить</a>
+      </div>
+      <div class="prog open">
+        <span class="badge open">● Доступ сразу</span>
+        <h3>Курс «Ноль-Два»</h3>
+        <p class="desc">Продолжение в записи. Постоянный набор, проходится самостоятельно.</p>
+        <div class="price">50 $ <small style="color:var(--ink-faint)">либо</small></div>
+        <a href="#" class="pbtn">Получить бесплатно</a>
+      </div>
+      <div class="prog soon">
+        <span class="badge soon">◷ Старт 1 июля</span>
+        <h3>Воркшоп</h3>
+        <p class="desc">Практический интенсив с группой. Следующий набор — 1 июля.</p>
+        <div class="price"><span class="ph">—</span> <small>цена</small></div>
+        <a href="#" class="pbtn">Встать в резерв</a>
+      </div>
+      <div class="prog soon">
+        <span class="badge soon">◷ Старт 1 сентября</span>
+        <h3>Маркетарианец 2.0</h3>
+        <p class="desc">Крипта + Форекс + Фьючерсы. Профессиональная программа с экзаменом.</p>
+        <div class="price">от 2 200 $</div>
+        <a href="#" class="pbtn">Встать в резерв</a>
+      </div>
+      <div class="prog closed">
+        <span class="badge closed">● Набор закрыт</span>
+        <h3>Профессия трейдер</h3>
+        <p class="desc">Полный курс с дипломом европейского образца. 700+ часов теории и практики.</p>
+        <div class="price" style="color:var(--ink-faint)">по запросу</div>
+        <a href="#" class="pbtn">Встать в резерв</a>
+      </div>
+      <div class="prog soon">
+        <span class="badge soon">◷ 2 места · старт 1 октября</span>
+        <h3>Личное наставничество</h3>
+        <p class="desc">Индивидуальная программа от 2 менторов. Макро- и микроструктура рынка.</p>
+        <div class="price">от 8 000 $</div>
+        <a href="#" class="pbtn">Встать в резерв</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRUCTOR -->
+<section class="start-sec" id="start">
+  <div class="wrap">
+    <div class="start-card">
+      <div class="start-l">
+        <span class="tag">Бесплатно · ~3 минуты</span>
+        <h2>Строим маршрут трейдера</h2>
+        <p>Не знаешь, с чего начать? Пройди короткое анкетирование — определим твой текущий уровень и соберём персональный план: какие бесплатные видео смотреть, что почитать и какая программа NZT тебе подходит дальше.</p>
+        <div class="start-steps">
+          <span><b>1.</b> Отвечаешь на вопросы</span>
+          <span><b>2.</b> Получаешь свой уровень</span>
+          <span><b>3.</b> Готовый roadmap обучения</span>
+        </div>
+      </div>
+      <div class="start-r">
+        <a href="#" class="btn btn-primary">Построить свой маршрут →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS / SERVICES -->
+<section class="sec" id="tools">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">02 · Сервисы и инструменты</span>
+      <h2>Инфраструктура NZT</h2>
+    </div>
+    <div class="srv-list">
+
+      <div class="srv srv-split accent">
+        <div class="srv-body">
+          <span class="tag">Флагман · торговые боты 24/7</span>
+          <h3>Atlas by NZT</h3>
+          <p>Уникальный сервис для трейдера/инвестора. 7 лет практики, 3 года консалтинга и 1 год разработки. IT-технологии и опыт. Atlas — сервис, где зарабатывают.</p>
+          <a href="#" class="btn btn-primary" style="align-self:flex-start;margin-top:14px">Перейти →</a>
+        </div>
+        <div class="srv-img" style="background-image:url('https://static.tildacdn.one/tild6161-3564-4232-b065-303866616339/Screenshot_2026-02-1.png')"></div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-main">
+          <span class="tag">Крипто · портфель сообщества</span>
+          <h3>NZT Альфа</h3>
+          <p>Совместно с выдающимися студентами сообщества мы собираем криптопортфель NZT — отбираем перспективные активы и открыто фиксируем логику решений. Сила комьюнити, помноженная на дисциплину.</p>
+          <p class="srv-disc">Не является индивидуальной инвестиционной рекомендацией.</p>
+        </div>
+        <a href="#" class="btn btn-ghost srv-act">Подробнее →</a>
+      </div>
+
+      <div class="srv">
+        <div class="srv-main">
+          <span class="tag">Доступ</span>
+          <h3>NZT VPN</h3>
+          <p>Стабильный и быстрый доступ к торговым площадкам, биржам и сервисам без ограничений.</p>
+        </div>
+        <a href="#" class="btn btn-primary srv-act">Купить</a>
+      </div>
+
+      <div class="srv">
+        <div class="srv-main">
+          <span class="tag">Услуги</span>
+          <h3>NZT Консалтинг</h3>
+          <p>Индивидуальное сопровождение и экспертиза для частных трейдеров, бизнеса и фондов. Рыночные и IT-решения под конкретную задачу.</p>
+        </div>
+        <a href="#" class="btn btn-primary srv-act">Оставить заявку</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MENTORS -->
+<section class="sec" id="mentors">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">03 · Команда</span>
+      <h2>Менторы и кураторы</h2>
+    </div>
+    <div class="mentors">
+      <div class="mentor"><div class="head">А</div><h4>Алмаз</h4><div class="role">Ментор, основатель</div><div class="exp">8 лет в рынке</div></div>
+      <div class="mentor"><div class="head">А</div><h4>Андриан</h4><div class="role">Ментор, основатель</div><div class="exp">магистр, HISTES</div></div>
+      <div class="mentor"><div class="head">О</div><h4>Оксана</h4><div class="role">Ментор, выпускница 2021</div><div class="exp">квал. специалист</div></div>
+      <div class="mentor"><div class="head">А</div><h4>Андрей</h4><div class="role">Куратор</div><div class="exp">практикующий трейдер · сотни часов проверки ДЗ студентов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section class="sec" id="social">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">04 · Сообщество</span>
+      <h2>Соцсети и контент</h2>
+    </div>
+    <div class="social-grid">
+      <div class="yt-card">
+        <div class="social-head"><span class="ico yt">▶</span><h3>Последнее на YouTube</h3></div>
+        <div class="yt-frame">
+          <iframe src="https://www.youtube.com/embed?listType=playlist&list=UU6z2rk6JdncwoTe13duQi8Q" allow="encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="yt-stats">
+          <div class="s"><div class="n" style="color:var(--ink-faint)">300+ часов</div><div class="l">бесплатного видео · уточним через API</div></div>
+          <div class="s"><div class="n">1×</div><div class="l">дайджест по рынку в неделю</div></div>
+        </div>
+        <p class="note">Виджет обновляется автоматически — всегда показывает свежее видео канала.</p>
+      </div>
+      <div class="tg-card">
+        <div class="social-head"><span class="ico tg">✈</span><h3>Telegram</h3></div>
+        <div class="tg-post">
+          <div class="tg-top">
+            <div class="tg-ava">N</div>
+            <div><div class="tg-ch">NZT University</div><div class="tg-handle">@nztuniversity</div></div>
+          </div>
+          <div class="tg-text">📊 Еженедельный разбор рынка уже на канале: ключевые уровни ликвидности по BTC, индексам и золоту. Разбираем, где крупный игрок собирает позицию…</div>
+          <div class="tg-foot"><span>👁 4,2K</span><span>сегодня, 11:30</span></div>
+        </div>
+        <p class="note">Выводится автоматически — последний пост из публичного канала t.me/nztuniversity.</p>
+        <a href="#" class="buybtn" style="margin-top:14px">Вступить в сообщество</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-kicker">05 · Доверие</span>
+      <h2>Отзывы студентов</h2>
+    </div>
+    <p class="sec-sub">Реальные истории выпускников NZT в коротком вертикальном формате.</p>
+    <div class="shorts">
+      <div class="short">
+        <div class="thumb" style="background:linear-gradient(160deg,#243044,#0e1218)"></div>
+        <div class="lines"></div>
+        <span class="badge-s">SHORTS</span><span class="dur">0:48</span>
+        <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="who"><div class="nm">Яна</div><div class="tag2">выпускница · 1,5 года в NZT</div></div>
+      </div>
+      <div class="short">
+        <div class="thumb" style="background:linear-gradient(160deg,#3a2e1c,#0e1218)"></div>
+        <div class="lines"></div>
+        <span class="badge-s">SHORTS</span><span class="dur">1:02</span>
+        <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="who"><div class="nm">Арсений</div><div class="tag2">«Профессия трейдер»</div></div>
+      </div>
+      <div class="short">
+        <div class="thumb" style="background:linear-gradient(160deg,#1c3a32,#0e1218)"></div>
+        <div class="lines"></div>
+        <span class="badge-s">SHORTS</span><span class="dur">0:37</span>
+        <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="who"><div class="nm">Альбина</div><div class="tag2">выпускница 2022</div></div>
+      </div>
+      <div class="short">
+        <div class="thumb" style="background:linear-gradient(160deg,#33203a,#0e1218)"></div>
+        <div class="lines"></div>
+        <span class="badge-s">SHORTS</span><span class="dur">0:55</span>
+        <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="who"><div class="nm">Сергей</div><div class="tag2">студент · практика</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px"><a href="#" class="btn btn-ghost">Все отзывы и трейды →</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h5>NZT Trader</h5>
+        <p>Международное сообщество Price Action трейдеров. Европейская сертификация HISTES с 2019 года.</p>
+      </div>
+      <div>
+        <h5>Контакты</h5>
+        <a href="#">E-mail: monteco@bk.ru</a>
+        <a href="#">Приёмная: @NZT_WORKSHOP</a>
+        <a href="#">Telegram-сообщество</a>
+        <a href="#">Discord</a>
+      </div>
+      <div>
+        <h5>Разделы</h5>
+        <a href="#university">Университет</a>
+        <a href="#tools">Сервисы</a>
+        <a href="#mentors">Менторы</a>
+        <a href="#social">Сообщество</a>
+      </div>
+    </div>
+    <div class="disclaimer">
+      <b style="color:var(--ink-dim)">Предупреждение о рисках.</b> Торговля на финансовых рынках и операции с криптовалютами сопряжены с высоким уровнем риска и могут привести к потере вложенных средств. Материалы сообщества носят образовательный характер и не являются индивидуальной инвестиционной рекомендацией. NZT Trader не оказывает услуг по доверительному управлению. Принимая решения, оценивайте риски самостоятельно.
+    </div>
+    <div class="copy">© NZT Trader 2020–2026. Все материалы охраняются авторским правом.</div>
+  </div>
+</footer>
+
+</body>
+</html>
