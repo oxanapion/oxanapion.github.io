@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -69,7 +69,22 @@
     display:grid;place-items:center;color:#0a0c10;font-size:13px;font-weight:800;
   }
   .logo small{display:block;font-family:'Manrope';font-weight:500;font-size:10px;letter-spacing:.18em;color:var(--ink-faint);text-transform:uppercase;margin-top:1px}
-  .nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--ink-dim);font-weight:500}
+  .nav-links{display:flex;gap:4px;font-size:13.5px;color:var(--ink-dim);font-weight:500;align-items:center}
+  .nav-item{position:relative}
+  .nav-item > a{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:8px;cursor:pointer;color:var(--ink-dim);transition:.2s;white-space:nowrap}
+  .nav-item > a:hover,.nav-item:hover > a{color:var(--ink);background:rgba(255,255,255,.05)}
+  .nav-arrow{font-size:8px;opacity:.55}
+  .nav-item::before{content:"";position:absolute;top:100%;left:0;right:0;height:8px}
+  .dropdown{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:8px;min-width:256px;box-shadow:0 24px 60px rgba(0,0,0,.6);z-index:60}
+  .nav-item:hover .dropdown{display:block}
+  .dd-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:8px;color:var(--ink-dim);transition:.2s}
+  .dd-item:hover{background:rgba(232,179,57,.1);color:var(--ink)}
+  .dd-ico{font-size:15px;flex-shrink:0;width:20px;text-align:center}
+  .dd-info{flex:1}
+  .dd-name{font-size:13px;color:var(--ink);font-weight:500}
+  .dd-sub{font-size:11px;color:var(--ink-faint);margin-top:1px}
+  .dd-price{font-size:11px;color:var(--gold);flex-shrink:0;font-weight:600}
+  .dd-sep{height:1px;background:var(--line);margin:6px 4px}
   .nav-links a:hover{color:var(--ink)}
   .nav-cta{
     border:1px solid var(--gold);color:var(--gold);
@@ -81,6 +96,9 @@
 
   /* hero */
   .hero{position:relative;padding:72px 0 56px;overflow:hidden}
+  .hero::after{content:"NZT";position:absolute;right:-30px;top:50%;transform:translateY(-50%);
+    font-family:'Unbounded';font-weight:800;font-size:clamp(140px,26vw,420px);line-height:1;letter-spacing:.01em;
+    color:var(--gold);opacity:.13;pointer-events:none;z-index:0}
   .hero-grid-bg{
     position:absolute;inset:0;z-index:0;opacity:.5;
     background-image:
@@ -89,7 +107,20 @@
     background-size:46px 46px;
     mask-image:radial-gradient(800px 400px at 70% 30%,#000,transparent 75%);
   }
-  .hero-in{position:relative;z-index:1;max-width:820px}
+  .hero-grid{display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:38px}}
+  .hero-in{position:relative;z-index:1}
+  .eco-card{position:relative;z-index:1;background:rgba(21,26,34,.5);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:24px}
+  .eco-card-ttl{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+  .eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .eco-item{background:rgba(17,21,28,.45);border:1px solid var(--line);border-radius:10px;padding:13px;transition:.2s}
+  .eco-item:hover{border-color:var(--gold-dim)}
+  .eco-item.feat{grid-column:1/-1;background:linear-gradient(135deg,rgba(232,179,57,.12),rgba(232,179,57,.03));border-color:var(--gold-dim);display:flex;align-items:center;gap:12px}
+  .eco-ico{font-size:18px;margin-bottom:6px}
+  .eco-item.feat .eco-ico{margin-bottom:0;font-size:24px}
+  .eco-name{font-family:'Unbounded';font-weight:400;font-size:13px}
+  .eco-desc{font-size:11px;color:var(--ink-faint);margin-top:3px;line-height:1.35}
+  .eco-badge{display:inline-block;background:var(--gold);color:#0a0c10;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-top:5px}
   .cert-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
   .pill{
     display:inline-flex;align-items:center;gap:7px;
@@ -100,7 +131,7 @@
   .pill.green .dot{background:var(--green)}
   h1{
     font-family:'Unbounded';font-weight:800;
-    font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.01em;
+    font-size:clamp(34px,6vw,62px);line-height:1.12;letter-spacing:-.01em;
     margin-bottom:22px;
   }
   h1 .accent{
@@ -109,10 +140,10 @@
   }
   .lede{font-size:clamp(15px,2vw,18px);color:var(--ink-dim);max-width:620px;font-weight:400}
   .lede b{color:var(--ink);font-weight:600}
-  .hero-stats{display:flex;gap:38px;margin:34px 0 32px;flex-wrap:wrap}
-  .stat .num{font-family:'Unbounded';font-weight:600;font-size:30px;color:var(--ink)}
-  .stat .num.gold{color:var(--gold)}
-  .stat .lab{font-size:12.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+  .hero-stats{display:flex;gap:32px;margin-top:42px;padding-top:30px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .stat-num{font-family:'Unbounded';font-weight:600;font-size:26px;color:var(--ink);line-height:1}
+  .stat-num .g{color:var(--gold)}
+  .stat-lbl{font-size:12px;color:var(--ink-faint);margin-top:8px;line-height:1.4}
   .btn-row{display:flex;gap:13px;flex-wrap:wrap}
   .btn{
     padding:14px 24px;border-radius:12px;font-weight:600;font-size:14.5px;
@@ -125,8 +156,8 @@
 
   /* section heading */
   .sec{padding:54px 0}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:28px}
-  .sec-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .sec-head{margin-bottom:28px}
+  .sec-kicker{display:block;margin-bottom:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .sec-head h2{font-family:'Unbounded';font-weight:600;font-size:clamp(24px,3.5vw,34px)}
   .sec-sub{color:var(--ink-dim);font-size:14.5px;margin:-16px 0 28px;max-width:640px}
 
@@ -184,15 +215,25 @@
 
   /* full-width service bands */
   .srv-list{display:flex;flex-direction:column;gap:16px}
-  .srv{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;
+  .srv{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;position:relative;overflow:hidden;
     background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 36px;transition:.2s}
   .srv:hover{border-color:var(--ink-faint)}
-  .srv-main{max-width:720px}
+  /* signature color: left accent stripe */
+  .srv::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;z-index:1;background:transparent}
+  .srv.b-green::after{background:linear-gradient(180deg,var(--green),transparent)}
+  .srv.b-blue::after{background:linear-gradient(180deg,#5566f0,transparent)}
+  .srv.b-amber::after{background:linear-gradient(180deg,#e8902f,transparent)}
+  /* faint glow, unique spot per service */
+  .srv::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(70px);opacity:.16;pointer-events:none;z-index:0;background:transparent}
+  .srv.b-green::before{background:#3fd07f;right:9%;bottom:-100px}
+  .srv.b-blue::before{background:#5566f0;left:44%;top:50%;transform:translateY(-50%)}
+  .srv.b-amber::before{background:#e8902f;left:-70px;top:-80px}
+  .srv-main{max-width:720px;position:relative;z-index:1}
   .srv .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
   .srv h3{font-family:'Unbounded';font-weight:400;font-size:26px;margin:10px 0 10px}
   .srv p{font-size:14px;color:var(--ink-dim);max-width:680px}
   .srv-disc{font-size:12px;color:var(--ink-faint);margin-top:12px}
-  .srv-act{align-self:center;white-space:nowrap}
+  .srv-act{align-self:center;white-space:nowrap;position:relative;z-index:1}
   .srv-split{display:grid;grid-template-columns:1.1fr 1fr;gap:0;padding:0;overflow:hidden;align-items:stretch}
   .srv-split.accent{border-color:var(--gold-dim)}
   .srv-split .srv-body{padding:36px 40px;display:flex;flex-direction:column;justify-content:center;gap:4px}
@@ -205,14 +246,17 @@
   }
 
   /* mentors */
-  .mentors{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  @media(max-width:760px){.mentors{grid-template-columns:1fr 1fr}}
-  .mentor{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;transition:.2s}
-  .mentor:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
-  .head{width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:linear-gradient(135deg,var(--panel-2),var(--line));display:grid;place-items:center;font-family:'Unbounded';color:var(--ink-faint);font-size:24px;border:1px solid var(--line)}
-  .mentor h4{font-family:'Unbounded';font-weight:400;font-size:17px}
-  .mentor .role{font-size:12px;color:var(--gold);margin-top:3px}
-  .mentor .exp{font-size:12px;color:var(--ink-faint);margin-top:6px}
+  .mentors-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:980px){.mentors-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.mentors-grid{grid-template-columns:1fr}}
+  .m-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;transition:.22s}
+  .m-card:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
+  .m-ava{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#7a5c1a);display:grid;place-items:center;font-family:'Unbounded';font-weight:700;font-size:20px;color:#0a0c10;margin-bottom:16px}
+  .m-name{font-family:'Unbounded';font-weight:400;font-size:18px;margin-bottom:3px}
+  .m-role{font-size:12.5px;color:var(--gold);margin-bottom:12px}
+  .m-bio{font-size:13.5px;color:var(--ink-dim);line-height:1.6}
+  .m-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .m-tag{font-size:11px;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-dim);padding:4px 10px;border-radius:100px}
 
   /* social */
   .social-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
@@ -292,6 +336,44 @@
   .start-steps span{font-size:12.5px;color:var(--ink-faint)}
   .start-steps b{color:var(--ink);font-weight:600}
   .start-r{position:relative;z-index:1}
+
+  /* path / funnel */
+  .path-sec{padding:54px 0;background:var(--bg-2)}
+  .path-head{margin-bottom:42px}
+  .path-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .path-head h2{font-family:'Unbounded';font-weight:600;font-size:clamp(24px,3.5vw,34px);margin:10px 0 14px;line-height:1.1}
+  .path-sub{color:var(--ink-dim);font-size:14.5px;max-width:660px;line-height:1.6}
+  .path-scroll{overflow-x:auto;padding-bottom:8px}
+  .path-steps{display:flex;gap:0;position:relative;min-width:720px}
+  .path-line{position:absolute;top:27px;left:0;right:0;height:2px;background:linear-gradient(to right,#e8b339,#b0bd50,#77c668,#3fd07f);z-index:0}
+  .p-step{flex:1;position:relative;z-index:1;text-align:center;padding:0 16px}
+  .p-num{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Unbounded';font-size:18px;font-weight:600;margin:0 auto 16px;background:var(--panel-2);border:2px solid var(--gold-dim);color:var(--gold)}
+  .p-step:nth-child(2) .p-num{border-color:#e8b339;color:#e8b339}
+  .p-step:nth-child(3) .p-num{border-color:#b0bd50;color:#b0bd50}
+  .p-step:nth-child(4) .p-num{border-color:#77c668;color:#77c668}
+  .p-step:nth-child(5) .p-num{border-color:#3fd07f;color:#3fd07f}
+  .p-title{font-family:'Unbounded';font-weight:400;font-size:15px;margin-bottom:6px}
+  .p-desc{font-size:12.5px;color:var(--ink-faint);line-height:1.5}
+  .path-cta{margin-top:38px}
+
+  /* atlas feature section */
+  .atlas-sec{position:relative;overflow:hidden;background:var(--bg-2);border-top:1px solid var(--line);padding:66px 0}
+  .atlas-sec::before{content:"ATLAS";position:absolute;right:-24px;top:50%;transform:translateY(-50%);
+    font-family:'Unbounded';font-weight:800;font-size:clamp(120px,21vw,300px);line-height:1;letter-spacing:.01em;
+    color:#0a0c10;opacity:.6;pointer-events:none;z-index:0}
+  .atlas-in{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center}
+  @media(max-width:820px){.atlas-in{grid-template-columns:1fr;gap:30px}}
+  .atlas-tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .atlas-sec h2{font-family:'Unbounded';font-weight:600;font-size:clamp(26px,3.6vw,38px);line-height:1.08;margin:12px 0 14px;max-width:540px}
+  .atlas-lede{color:var(--ink-faint);font-size:14.5px;max-width:440px;margin-bottom:30px;line-height:1.6}
+  .atlas-stats{display:flex;gap:38px;flex-wrap:wrap}
+  .atlas-stats .n{font-family:'Unbounded';font-weight:700;font-size:36px;color:var(--gold);line-height:1}
+  .atlas-stats .l{font-size:12.5px;color:var(--ink-dim);margin-top:8px;max-width:130px;line-height:1.4}
+  .atlas-btn{margin-top:30px}
+  .atlas-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .atlas-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .atlas-card .n{font-family:'Unbounded';font-weight:700;font-size:30px;color:var(--gold);line-height:1}
+  .atlas-card .l{font-size:12.5px;color:var(--ink-dim);margin-top:8px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -302,10 +384,37 @@
   <div class="wrap nav-in">
     <a href="#" class="logo"><span class="mark">NZT</span><span>NZT TRADER<small>Независимый трейдер</small></span></a>
     <div class="nav-links">
-      <a href="#university">Университет</a>
-      <a href="#tools">Сервисы</a>
-      <a href="#mentors">Менторы</a>
-      <a href="#social">Сообщество</a>
+      <div class="nav-item">
+        <a href="#university">Университет <span class="nav-arrow">▾</span></a>
+        <div class="dropdown">
+          <div class="dd-item" onclick="location.href='#start'"><span class="dd-ico">🧭</span><div class="dd-info"><div class="dd-name">Персональный план</div><div class="dd-sub">Подбери маршрут под себя</div></div></div>
+          <div class="dd-sep"></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">🎯</span><div class="dd-info"><div class="dd-name">Курс «Ноль-Один»</div><div class="dd-sub">Базовый старт, Price Action</div></div><span class="dd-price">2999₽</span></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">📈</span><div class="dd-info"><div class="dd-name">Курс «Ноль-Два»</div><div class="dd-sub">Углублённый уровень</div></div><span class="dd-price">50$</span></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">🛠️</span><div class="dd-info"><div class="dd-name">Воркшоп</div><div class="dd-sub">Практика в группе</div></div></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">🚀</span><div class="dd-info"><div class="dd-name">Маркетарианец 2.0</div><div class="dd-sub">Крипто + Форекс + Фьючерсы</div></div><span class="dd-price">от $2200</span></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">🏆</span><div class="dd-info"><div class="dd-name">Профессия Трейдер</div><div class="dd-sub">Все рынки, диплом ЕС</div></div></div>
+          <div class="dd-item" onclick="location.href='#university'"><span class="dd-ico">👤</span><div class="dd-info"><div class="dd-name">Личное наставничество</div><div class="dd-sub">Индивидуально</div></div><span class="dd-price">от $8000</span></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#tools">Сервисы <span class="nav-arrow">▾</span></a>
+        <div class="dropdown">
+          <div class="dd-item" onclick="location.href='#tools'"><span class="dd-ico">🔐</span><div class="dd-info"><div class="dd-name">NZT VPN</div><div class="dd-sub">Доступ к площадкам</div></div></div>
+          <div class="dd-item" onclick="location.href='#atlas'"><span class="dd-ico">🤖</span><div class="dd-info"><div class="dd-name">Atlas</div><div class="dd-sub">Торговые боты 24/7</div></div></div>
+          <div class="dd-item" onclick="location.href='#tools'"><span class="dd-ico">🤝</span><div class="dd-info"><div class="dd-name">NZT Консалтинг</div><div class="dd-sub">Бизнесу и фондам</div></div></div>
+          <div class="dd-item" onclick="location.href='#tools'"><span class="dd-ico">📈</span><div class="dd-info"><div class="dd-name">NZT Альфа</div><div class="dd-sub">Криптопортфель</div></div></div>
+        </div>
+      </div>
+      <div class="nav-item"><a href="#mentors">Менторы</a></div>
+      <div class="nav-item">
+        <a href="#social">Ресурсы <span class="nav-arrow">▾</span></a>
+        <div class="dropdown">
+          <div class="dd-item" onclick="location.href='#social'"><span class="dd-ico">▶️</span><div class="dd-info"><div class="dd-name">YouTube</div><div class="dd-sub">300+ часов бесплатно</div></div></div>
+          <div class="dd-item" onclick="location.href='#social'"><span class="dd-ico">✈️</span><div class="dd-info"><div class="dd-name">Telegram-канал</div><div class="dd-sub">Разборы и анонсы</div></div></div>
+          <div class="dd-item" onclick="location.href='#social'"><span class="dd-ico">🤖</span><div class="dd-info"><div class="dd-name">Telegram-бот</div><div class="dd-sub">5 бесплатных уроков</div></div></div>
+        </div>
+      </div>
     </div>
     <a href="#start" class="nav-cta">Построить маршрут</a>
   </div>
@@ -314,30 +423,87 @@
 <!-- HERO -->
 <header class="hero">
   <div class="hero-grid-bg"></div>
-  <div class="wrap hero-in">
+  <div class="wrap hero-grid">
+   <div class="hero-in">
     <div class="cert-row">
       <span class="pill"><span class="dot"></span>Европейская сертификация HISTES</span>
       <span class="pill green"><span class="dot"></span>Международное сообщество Price Action трейдеров</span>
     </div>
-    <h1>Экосистема для <span class="accent">ритейл-<br>и институциональных</span> трейдеров.</h1>
+    <h1>Экосистема для трейдеров —<br><span class="accent">обучение, сервисы, сообщество</span></h1>
     <p class="lede">Уникальная методология Price Action, сертифицированный университет и полная инфраструктура — <b>от бесплатного бота до личного наставничества.</b></p>
     <div class="hero-stats">
-      <div class="stat"><div class="num gold">7+ лет</div><div class="lab">на рынке образования</div></div>
-      <div class="stat"><div class="num gold">1000+</div><div class="lab">выпускников</div></div>
-      <div class="stat"><div class="num">HISTES</div><div class="lab">единственная в СНГ сертификация</div></div>
-      <div class="stat"><div class="num">24/7</div><div class="lab">работа торговых ботов Atlas</div></div>
+      <div><div class="stat-num"><span class="g">7</span>+</div><div class="stat-lbl">лет на рынке<br>образования</div></div>
+      <div><div class="stat-num">1000<span class="g">+</span></div><div class="stat-lbl">выпускников<br>сообщества</div></div>
+      <div><div class="stat-num"><span class="g">HISTES</span></div><div class="stat-lbl">единственная в СНГ<br>сертификация</div></div>
+      <div><div class="stat-num">24<span class="g">/</span>7</div><div class="stat-lbl">торговые боты<br>Atlas</div></div>
     </div>
-    <div class="btn-row">
-      <a href="#start" class="btn btn-primary">Построить свой маршрут в трейдинге →</a>
-    </div>
+   </div>
+   <div class="eco-card">
+     <div class="eco-card-ttl">Экосистема NZT</div>
+     <div class="eco-grid">
+       <div class="eco-item feat">
+         <div class="eco-ico">🎓</div>
+         <div>
+           <div class="eco-name">NZT University</div>
+           <div class="eco-desc">Сертифицированное обучение, диплом ЕС</div>
+           <span class="eco-badge">HISTES</span>
+         </div>
+       </div>
+       <div class="eco-item"><div class="eco-ico">🤖</div><div class="eco-name">Atlas</div><div class="eco-desc">Торговые боты 24/7</div></div>
+       <div class="eco-item"><div class="eco-ico">📈</div><div class="eco-name">NZT Альфа</div><div class="eco-desc">Криптопортфель</div></div>
+       <div class="eco-item"><div class="eco-ico">👥</div><div class="eco-name">Сообщество</div><div class="eco-desc">Круг единомышленников со всего мира</div></div>
+       <div class="eco-item"><div class="eco-ico">▶️</div><div class="eco-name">YouTube</div><div class="eco-desc">300+ часов бесплатно</div></div>
+       <div class="eco-item"><div class="eco-ico">🔐</div><div class="eco-name">NZT VPN</div><div class="eco-desc">Доступ к площадкам</div></div>
+       <div class="eco-item"><div class="eco-ico">🤝</div><div class="eco-name">Консалтинг</div><div class="eco-desc">Бизнесу и фондам</div></div>
+     </div>
+   </div>
   </div>
 </header>
+
+<!-- CONSTRUCTOR -->
+<section class="path-sec" id="start">
+  <div class="wrap">
+    <div class="path-head">
+      <span class="path-kicker">Путь в сообщество</span>
+      <h2>От новичка<br>до дипломированного трейдера</h2>
+      <p class="path-sub">Не знаешь, с чего начать? Пройди короткое анкетирование — определим твой текущий уровень и соберём персональный план: какие бесплатные видео смотреть, что почитать и какая программа NZT тебе подходит дальше.</p>
+    </div>
+    <div class="path-scroll">
+      <div class="path-steps">
+        <div class="path-line"></div>
+        <div class="p-step">
+          <div class="p-num">1</div>
+          <div class="p-title">Отвечаешь на вопросы</div>
+          <div class="p-desc">5 простых вопросов, 3 минуты, бесплатно.</div>
+        </div>
+        <div class="p-step">
+          <div class="p-num">2</div>
+          <div class="p-title">Узнаёшь свой уровень</div>
+          <div class="p-desc">система определяет уровень твоей подготовки</div>
+        </div>
+        <div class="p-step">
+          <div class="p-num">3</div>
+          <div class="p-title">Получаешь роадмап обучения</div>
+          <div class="p-desc">персональный план: какие книги читать, какие видео смотреть и какие курсы проходить — и в каком порядке</div>
+        </div>
+        <div class="p-step">
+          <div class="p-num">4</div>
+          <div class="p-title">Приходишь к результату</div>
+          <div class="p-desc">двигаешься по роадмапу в своём темпе, шаг за шагом</div>
+        </div>
+      </div>
+    </div>
+    <div class="path-cta">
+      <a href="#" class="btn btn-primary">Построить свой маршрут →</a>
+    </div>
+  </div>
+</section>
 
 <!-- UNIVERSITY -->
 <section class="sec" id="university">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">01 · Обучение</span>
+      <span class="sec-kicker">Обучение</span>
       <h2>NZT University</h2>
     </div>
     <p class="sec-sub">Сертифицированные программы от новичка до профессионала. Бесплатный старт, групповые потоки и личное наставничество.</p>
@@ -389,23 +555,20 @@
   </div>
 </section>
 
-<!-- CONSTRUCTOR -->
-<section class="start-sec" id="start">
-  <div class="wrap">
-    <div class="start-card">
-      <div class="start-l">
-        <span class="tag">Бесплатно · ~3 минуты</span>
-        <h2>Строим маршрут трейдера</h2>
-        <p>Не знаешь, с чего начать? Пройди короткое анкетирование — определим твой текущий уровень и соберём персональный план: какие бесплатные видео смотреть, что почитать и какая программа NZT тебе подходит дальше.</p>
-        <div class="start-steps">
-          <span><b>1.</b> Отвечаешь на вопросы</span>
-          <span><b>2.</b> Получаешь свой уровень</span>
-          <span><b>3.</b> Готовый roadmap обучения</span>
-        </div>
-      </div>
-      <div class="start-r">
-        <a href="#" class="btn btn-primary">Построить свой маршрут →</a>
-      </div>
+<!-- ATLAS FEATURE -->
+<section class="atlas-sec" id="atlas">
+  <div class="wrap atlas-in">
+    <div>
+      <span class="atlas-tag">Atlas by NZT · флагман</span>
+      <h2>Торговые боты уровня фонда — для ритейл трейдера и инвестора</h2>
+      <p class="atlas-lede">7 лет практики, 3 года консалтинга, 1 год разработки. Сервис, где зарабатывают.</p>
+      <div class="atlas-btn"><a href="#" class="btn btn-primary">Перейти в Atlas →</a></div>
+    </div>
+    <div class="atlas-cards">
+      <div class="atlas-card"><div class="n">70%</div><div class="l">винрейт по сломам структуры</div></div>
+      <div class="atlas-card"><div class="n">100+</div><div class="l">торговых идей в сутки</div></div>
+      <div class="atlas-card"><div class="n">63%</div><div class="l">винрейт в консолидациях</div></div>
+      <div class="atlas-card"><div class="n">11</div><div class="l">человек в команде</div></div>
     </div>
   </div>
 </section>
@@ -414,22 +577,12 @@
 <section class="sec" id="tools">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">02 · Сервисы и инструменты</span>
-      <h2>Инфраструктура NZT</h2>
+      <span class="sec-kicker">Экосистема NZT</span>
+      <h2>Другие сервисы</h2>
     </div>
     <div class="srv-list">
 
-      <div class="srv srv-split accent">
-        <div class="srv-body">
-          <span class="tag">Флагман · торговые боты 24/7</span>
-          <h3>Atlas by NZT</h3>
-          <p>Уникальный сервис для трейдера/инвестора. 7 лет практики, 3 года консалтинга и 1 год разработки. IT-технологии и опыт. Atlas — сервис, где зарабатывают.</p>
-          <a href="#" class="btn btn-primary" style="align-self:flex-start;margin-top:14px">Перейти →</a>
-        </div>
-        <div class="srv-img" style="background-image:url('https://static.tildacdn.one/tild6161-3564-4232-b065-303866616339/Screenshot_2026-02-1.png')"></div>
-      </div>
-
-      <div class="srv">
+      <div class="srv b-green">
         <div class="srv-main">
           <span class="tag">Крипто · портфель сообщества</span>
           <h3>NZT Альфа</h3>
@@ -439,7 +592,7 @@
         <a href="#" class="btn btn-ghost srv-act">Подробнее →</a>
       </div>
 
-      <div class="srv">
+      <div class="srv b-blue">
         <div class="srv-main">
           <span class="tag">Доступ</span>
           <h3>NZT VPN</h3>
@@ -448,7 +601,7 @@
         <a href="#" class="btn btn-primary srv-act">Купить</a>
       </div>
 
-      <div class="srv">
+      <div class="srv b-amber">
         <div class="srv-main">
           <span class="tag">Услуги</span>
           <h3>NZT Консалтинг</h3>
@@ -465,14 +618,38 @@
 <section class="sec" id="mentors">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">03 · Команда</span>
-      <h2>Менторы и кураторы</h2>
+      <span class="sec-kicker">Команда</span>
+      <h2>Менторы NZT</h2>
     </div>
-    <div class="mentors">
-      <div class="mentor"><div class="head">А</div><h4>Алмаз</h4><div class="role">Ментор, основатель</div><div class="exp">8 лет в рынке</div></div>
-      <div class="mentor"><div class="head">А</div><h4>Андриан</h4><div class="role">Ментор, основатель</div><div class="exp">магистр, HISTES</div></div>
-      <div class="mentor"><div class="head">О</div><h4>Оксана</h4><div class="role">Ментор, выпускница 2021</div><div class="exp">квал. специалист</div></div>
-      <div class="mentor"><div class="head">А</div><h4>Андрей</h4><div class="role">Куратор</div><div class="exp">практикующий трейдер · сотни часов проверки ДЗ студентов</div></div>
+    <div class="mentors-grid">
+      <div class="m-card">
+        <div class="m-ava">А</div>
+        <div class="m-name">Алмаз Жампеисов</div>
+        <div class="m-role">Ментор и основатель · Мерсин, Турция</div>
+        <div class="m-bio">11 лет в рынке. Основатель сообщества. Разработал авторскую методологию Price Action на базе синтеза лучших мировых подходов. Торгует 3–4 часа в день.</div>
+        <div class="m-tags"><span class="m-tag">Крипто SPOT</span><span class="m-tag">Основатель</span></div>
+      </div>
+      <div class="m-card">
+        <div class="m-ava">АП</div>
+        <div class="m-name">Андриан Панов</div>
+        <div class="m-role">Ментор и основатель · Гдыня, Польша</div>
+        <div class="m-bio">9 лет в рынке. Магистр International Business. Педагогическое образование по истории и экономике. Член HISTES. Учился у ведущих американских трейдеров.</div>
+        <div class="m-tags"><span class="m-tag">S&amp;P500</span><span class="m-tag">HISTES</span></div>
+      </div>
+      <div class="m-card">
+        <div class="m-ava">О</div>
+        <div class="m-name">Оксана</div>
+        <div class="m-role">Ментор · Выпускница NZT 2021</div>
+        <div class="m-bio">5 лет в рынке. Выпускница, дошла от студента до ментора. Квалифицированный специалист финансового рынка, стаж 9 лет. Стабильная положительная динамика.</div>
+        <div class="m-tags"><span class="m-tag">EUR/JPY</span><span class="m-tag">GOLD</span></div>
+      </div>
+      <div class="m-card">
+        <div class="m-ava">А</div>
+        <div class="m-name">Андрей</div>
+        <div class="m-role">Куратор · Выпускник 2021</div>
+        <div class="m-bio">Практикующий трейдер. Куратор курса 0-1, воркшопа, университета и практики. Провёл более 1000 часов стримов с разборами сделок студентов.</div>
+        <div class="m-tags"><span class="m-tag">Куратор</span><span class="m-tag">Стримы</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -481,9 +658,10 @@
 <section class="sec" id="social">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">04 · Сообщество</span>
-      <h2>Соцсети и контент</h2>
+      <span class="sec-kicker">Бесплатные ресурсы</span>
+      <h2>Начни прямо сейчас</h2>
     </div>
+    <p class="sec-sub">Тонны бесплатного контента для тех, кто хочет попробовать перед вступлением в сообщество.</p>
     <div class="social-grid">
       <div class="yt-card">
         <div class="social-head"><span class="ico yt">▶</span><h3>Последнее на YouTube</h3></div>
@@ -491,7 +669,7 @@
           <iframe src="https://www.youtube.com/embed?listType=playlist&list=UU6z2rk6JdncwoTe13duQi8Q" allow="encrypted-media" allowfullscreen></iframe>
         </div>
         <div class="yt-stats">
-          <div class="s"><div class="n" style="color:var(--ink-faint)">300+ часов</div><div class="l">бесплатного видео · уточним через API</div></div>
+          <div class="s"><div class="n" style="color:var(--gold)">300+ часов</div><div class="l">бесплатного видео · уточним через API</div></div>
           <div class="s"><div class="n">1×</div><div class="l">дайджест по рынку в неделю</div></div>
         </div>
         <p class="note">Виджет обновляется автоматически — всегда показывает свежее видео канала.</p>
@@ -517,8 +695,8 @@
 <section class="sec" id="reviews">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-kicker">05 · Доверие</span>
-      <h2>Отзывы студентов</h2>
+      <span class="sec-kicker">Доверие</span>
+      <h2>Результаты говорят сами</h2>
     </div>
     <p class="sec-sub">Реальные истории выпускников NZT в коротком вертикальном формате.</p>
     <div class="shorts">
