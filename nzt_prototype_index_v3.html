@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -279,8 +279,12 @@
   .social-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
   @media(max-width:760px){.social-grid{grid-template-columns:1fr}}
   .yt-card,.tg-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column}
-  .yt-frame{aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:14px}
+  .yt-frame{aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
   .yt-frame iframe{width:100%;height:100%;border:0}
+  .yt-tabs{display:flex;gap:8px;margin-top:14px}
+  .yt-tab{font-size:13px;font-weight:600;color:var(--ink-dim);background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:9px 16px;cursor:pointer;transition:.2s;font-family:'Manrope',sans-serif}
+  .yt-tab:hover{color:var(--ink)}
+  .yt-tab.active{color:var(--gold);background:rgba(232,179,57,.1);border-color:var(--gold-dim)}
   .social-head{display:flex;align-items:center;gap:10px}
   .social-head .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:13px}
   .ico.yt{background:#ff0033;color:#fff}
@@ -751,15 +755,19 @@
     <p class="sec-sub">Тонны бесплатного контента для тех, кто хочет попробовать перед вступлением в сообщество.</p>
     <div class="social-grid">
       <div class="yt-card">
-        <div class="social-head"><span class="ico yt">▶</span><h3>Последнее на YouTube</h3></div>
+        <div class="social-head"><span class="ico yt">▶</span><h3>YouTube</h3></div>
+        <div class="yt-tabs">
+          <button class="yt-tab active" data-src="https://www.youtube.com/embed?listType=playlist&amp;list=UU6z2rk6JdncwoTe13duQi8Q">NZT Trader</button>
+          <button class="yt-tab" data-src="https://www.youtube.com/embed/xPqMA__S9rk">NZT Education</button>
+        </div>
         <div class="yt-frame">
-          <iframe src="https://www.youtube.com/embed?listType=playlist&list=UU6z2rk6JdncwoTe13duQi8Q" allow="encrypted-media" allowfullscreen></iframe>
+          <iframe id="ytFrame" src="https://www.youtube.com/embed?listType=playlist&list=UU6z2rk6JdncwoTe13duQi8Q" allow="encrypted-media" allowfullscreen></iframe>
         </div>
         <div class="yt-stats">
           <div class="s"><div class="n" style="color:var(--gold)">300+ часов</div><div class="l">бесплатного видео · уточним через API</div></div>
           <div class="s"><div class="n">1×</div><div class="l">дайджест по рынку в неделю</div></div>
         </div>
-        <p class="note">Виджет обновляется автоматически — всегда показывает свежее видео канала.</p>
+        <p class="note">Вкладка NZT Trader обновляется автоматически — всегда показывает свежее видео канала.</p>
       </div>
       <div class="tg-card">
         <div class="social-head"><span class="ico tg">✈</span><h3>Telegram</h3></div>
@@ -883,5 +891,14 @@
   </div>
 </footer>
 
+<script>
+  document.querySelectorAll('.yt-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.yt-tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('ytFrame').src = tab.dataset.src;
+    });
+  });
+</script>
 </body>
 </html>
