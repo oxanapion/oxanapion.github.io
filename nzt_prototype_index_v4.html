@@ -36,7 +36,7 @@
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 22px}
   a{color:inherit;text-decoration:none}
 
   /* placeholder marker */
@@ -249,7 +249,8 @@
   #tools{padding-top:104px}
   .acc-stage{position:relative;padding:8px 0 80px}
   .acc-halo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(640px,88vw);height:min(640px,88vw);border-radius:50%;background-color:#3fd07f;filter:blur(150px);opacity:.16;z-index:0;pointer-events:none;transition:background-color 1.1s ease}
-  .acc-logo{position:relative;z-index:1;width:54px;height:54px;border-radius:12px;overflow:hidden;border:1px solid var(--line);flex-shrink:0}
+  .acc-logo{position:relative;z-index:1;width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;border:1px solid var(--line);flex-shrink:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
+  .acc-item.active .acc-logo{width:54px}
   .acc-logo img{width:100%;height:100%;object-fit:cover;display:block}
   .acc-item{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;flex:1;min-width:0;cursor:pointer;
     background:var(--panel);display:flex;flex-direction:column;justify-content:space-between;padding:26px;
@@ -262,8 +263,8 @@
   .acc-item.b-amber::before{background:radial-gradient(circle at 75% 15%,#e8902f,transparent 72%)}
   .acc-ico{position:relative;z-index:1;font-size:26px}
   .acc-body{position:relative;z-index:1}
-  .acc-tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;opacity:0;transition:opacity .4s ease .15s;white-space:nowrap}
-  .acc-item.active .acc-tag{opacity:1}
+  .acc-tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;opacity:0;max-height:0;overflow:hidden;transition:opacity .4s ease .15s;white-space:nowrap}
+  .acc-item.active .acc-tag{opacity:1;max-height:24px}
   .acc-title{font-family:'Unbounded';font-weight:400;font-size:24px;margin:8px 0;white-space:nowrap}
   .acc-detail{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s ease,opacity .5s ease}
   .acc-item.active .acc-detail{max-height:260px;opacity:1}
@@ -313,9 +314,7 @@
   @media(max-width:760px){.mentors-grid{grid-template-columns:1fr}}
   .m-card{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;transition:.22s}
   .m-card:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
-  .m-photo{position:absolute;inset:0;width:100%;height:100%;z-index:0;background-size:cover;background-position:top center;opacity:.55;
-    -webkit-mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.45) 36%,transparent 66%);
-    mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.45) 36%,transparent 66%)}
+  .m-photo{position:absolute;inset:0;width:100%;height:100%;z-index:0;background-size:cover;background-position:top center;opacity:.5}
   .m-info{position:relative;z-index:1}
   .m-info .m-name{margin-top:96px}
   .m-name{font-family:'Unbounded';font-weight:400;font-size:18px;margin-bottom:3px}
@@ -463,7 +462,7 @@
   .start-r{position:relative;z-index:1}
 
   /* path / funnel */
-  .path-sec{padding:54px 0;background:var(--bg-2)}
+  .path-sec{padding:54px 0;background:var(--bg-2);overflow:hidden}
   .path-head{margin-bottom:42px}
   .path-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .path-head h2{font-family:'Unbounded';font-weight:600;font-size:clamp(24px,3.5vw,34px);margin:10px 0 14px;line-height:1.1}
@@ -471,6 +470,10 @@
   .path-scroll{overflow-x:auto;padding-bottom:8px}
   .path-steps{display:flex;gap:0;position:relative;min-width:720px}
   .path-line{position:absolute;top:27px;left:0;right:0;height:2px;background:linear-gradient(to right,#e8b339,#b0bd50,#77c668,#3fd07f);z-index:0}
+  @media(min-width:761px){
+    .path-scroll{overflow:visible}
+    .path-line{left:50%;right:auto;transform:translateX(-50%);width:100vw;background:linear-gradient(to right,transparent,#e8b339 18%,#b0bd50 40%,#77c668 60%,#3fd07f 82%,transparent)}
+  }
   .p-step{flex:1;position:relative;z-index:1;text-align:center;padding:0 16px}
   .p-num{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Unbounded';font-size:18px;font-weight:600;margin:0 auto 16px;background:var(--panel-2);border:2px solid var(--gold-dim);color:var(--gold)}
   .p-step:nth-child(2) .p-num{border-color:#e8b339;color:#e8b339}
@@ -775,7 +778,7 @@
         <div class="acc-ico">🤝</div>
         <div class="acc-body">
           <div class="acc-tag">Услуги</div>
-          <h3 class="acc-title">NZT Консалтинг</h3>
+          <h3 class="acc-title">Консалтинг</h3>
           <div class="acc-detail">
             <p class="acc-desc">Индивидуальное сопровождение и экспертиза для частных трейдеров, бизнеса и фондов. Рыночные и IT-решения под конкретную задачу.</p>
             <a href="#" class="btn btn-primary acc-btn">Оставить заявку</a>
@@ -1052,6 +1055,21 @@
     setActive(0); start();
   })();
 </script>
+<script>
+  (function(){
+    var track=document.getElementById('revTrack');
+    if(!track) return;
+    var pages=track.querySelectorAll('.rev-page');
+    var dotsWrap=document.getElementById('revDots');
+    var n=pages.length, idx=0;
+    for(var i=0;i<n;i++){ var d=document.createElement('span'); d.className='rev-dot'+(i===0?' active':''); d.setAttribute('data-k',i); dotsWrap.appendChild(d); }
+    var dots=dotsWrap.querySelectorAll('.rev-dot');
+    function go(i){ idx=(i+n)%n; track.style.transform='translateX(-'+(idx*100)+'%)'; for(var k=0;k<dots.length;k++){ dots[k].classList.toggle('active',k===idx); } }
+    for(var j=0;j<dots.length;j++){ dots[j].addEventListener('click', function(){ go(parseInt(this.getAttribute('data-k'),10)); }); }
+    document.getElementById('revPrev').addEventListener('click', function(){ go(idx-1); });
+    document.getElementById('revNext').addEventListener('click', function(){ go(idx+1); });
+  })();
+</script>
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -1066,8 +1084,5 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/109601592" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-
-
-
 </body>
 </html>
