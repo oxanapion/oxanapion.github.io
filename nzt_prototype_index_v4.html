@@ -313,9 +313,9 @@
   @media(max-width:760px){.mentors-grid{grid-template-columns:1fr}}
   .m-card{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;transition:.22s}
   .m-card:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
-  .m-photo{position:absolute;top:0;right:0;width:72%;height:72%;z-index:0;background-size:cover;background-position:top center;opacity:.6;
-    -webkit-mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.55) 38%,transparent 72%);
-    mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.55) 38%,transparent 72%)}
+  .m-photo{position:absolute;inset:0;width:100%;height:100%;z-index:0;background-size:cover;background-position:top center;opacity:.55;
+    -webkit-mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.45) 36%,transparent 66%);
+    mask-image:linear-gradient(215deg,#000 0%,rgba(0,0,0,.45) 36%,transparent 66%)}
   .m-info{position:relative;z-index:1}
   .m-info .m-name{margin-top:96px}
   .m-name{font-family:'Unbounded';font-weight:400;font-size:18px;margin-bottom:3px}
@@ -377,6 +377,7 @@
 
   /* chapter divider banners */
   .divider{position:relative;min-height:340px;display:flex;align-items:center;overflow:hidden;margin:84px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .divider.d-tools{margin:42px 0}
   .divider .dvbg{position:absolute;inset:0;z-index:0}
   .divider.d-tools .dvbg{background:radial-gradient(820px 420px at 72% 30%,rgba(232,179,57,.2),transparent 60%),linear-gradient(135deg,#0f1626,#0a0c10)}
   .divider.d-people .dvbg{background:radial-gradient(820px 420px at 28% 40%,rgba(90,105,240,.18),transparent 60%),linear-gradient(135deg,#0e1118,#0a0c10)}
@@ -389,6 +390,28 @@
   .divider h2{font-family:'Unbounded';font-weight:600;font-size:clamp(28px,4vw,44px);line-height:1.1;max-width:600px;margin-bottom:12px}
   .dv-sub{font-size:15px;color:var(--ink-dim);max-width:480px}
   .dv-ph{position:absolute;right:20px;bottom:16px;z-index:3;font-size:11px;color:var(--ink-faint);border:1px dashed var(--ink-faint);padding:6px 10px;border-radius:8px;background:rgba(0,0,0,.35)}
+
+  /* reviews text gallery */
+  .rev-gallery{margin-top:44px;position:relative}
+  .rev-viewport{overflow:hidden}
+  .rev-track{display:flex;transition:transform .5s ease}
+  .rev-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.rev-page{grid-template-columns:1fr}}
+  .rev-card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column}
+  .rev-quote{font-family:'Unbounded';font-size:42px;line-height:.5;color:var(--gold);opacity:.5;margin-bottom:10px}
+  .rev-text{font-size:14px;color:var(--ink-dim);line-height:1.6;flex:1;margin-bottom:18px}
+  .rev-meta{display:flex;align-items:center;gap:12px}
+  .rev-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#7a5c1a);display:grid;place-items:center;font-family:'Unbounded';font-weight:700;font-size:13px;color:#0a0c10;flex-shrink:0}
+  .rev-name{font-weight:600;font-size:14px}
+  .rev-sub{font-size:12px;color:var(--ink-faint)}
+  .ph-rev{border-style:dashed;opacity:.55}
+  .ph-rev .rev-av{background:var(--panel-2);color:var(--ink-faint)}
+  .rev-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:26px}
+  .rev-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:20px;cursor:pointer;transition:.2s;display:grid;place-items:center}
+  .rev-arrow:hover{border-color:var(--gold-dim);color:var(--gold)}
+  .rev-dots{display:flex;gap:8px;align-items:center}
+  .rev-dot{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer;transition:.25s}
+  .rev-dot.active{background:var(--gold);width:22px;border-radius:4px}
 
   /* contact + subscribe */
   .cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -902,7 +925,38 @@
         <div class="who"><div class="nm">Сергей</div><div class="tag2">студент · практика</div></div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:28px"><a href="#" class="btn btn-ghost">Все отзывы и трейды →</a></div>
+    <div class="rev-gallery">
+      <div class="rev-viewport">
+        <div class="rev-track" id="revTrack">
+
+          <div class="rev-page">
+            <div class="rev-card"><div class="rev-quote">“</div><p class="rev-text">Организация обучения, качество подачи и обратная связь — всё на высоте. Менторы NZT лучшие не только по знаниям, но и как люди.</p><div class="rev-meta"><span class="rev-av">Я</span><div><div class="rev-name">Яна</div><div class="rev-sub">в сообществе 1,5 года</div></div></div></div>
+            <div class="rev-card"><div class="rev-quote">“</div><p class="rev-text">За 1,5 года выработал чёткое видение рынка. Как я смотрю на график сейчас и год назад — небо и земля. NZT сэкономило мне годы.</p><div class="rev-meta"><span class="rev-av">АР</span><div><div class="rev-name">Арсений</div><div class="rev-sub">Профессия Трейдер</div></div></div></div>
+            <div class="rev-card"><div class="rev-quote">“</div><p class="rev-text">С декабря по август торговала на демо в плюс, в сентябре перешла на реал. Очень рада, что попала в такой дружный коллектив.</p><div class="rev-meta"><span class="rev-av">АЛ</span><div><div class="rev-name">Альбина</div><div class="rev-sub">выпускница</div></div></div></div>
+          </div>
+
+          <div class="rev-page">
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+          </div>
+
+          <div class="rev-page">
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+            <div class="rev-card ph-rev"><div class="rev-quote">“</div><p class="rev-text">Текст отзыва — заменить на реальный из Telegram-чата.</p><div class="rev-meta"><span class="rev-av">?</span><div><div class="rev-name">Имя</div><div class="rev-sub">программа</div></div></div></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="rev-nav">
+        <button class="rev-arrow" id="revPrev" aria-label="Назад">‹</button>
+        <div class="rev-dots" id="revDots"></div>
+        <button class="rev-arrow" id="revNext" aria-label="Вперёд">›</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:28px"><a href="#" class="btn btn-ghost">Читать все отзывы в Telegram →</a></div>
   </div>
 </section>
 
